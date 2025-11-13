@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <title>Završetak sesije</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>Sesija je završena</h1>
+        <p>Video snimak vaše sesije je uspešno sačuvan.</p>
+        <p>Ako želite, možete ga poslati na željenu mejl adresu:</p>
+
+        <form method="POST" action="/finish">
+            <input type="email" name="email" placeholder="Unesite email adresu" required>
+            <br>
+            <button type="submit" class="action-btn asl-btn">Pošalji snimak</button>
+        </form>
+
+        <a href="/"><button class="start-btn">Ne želim da šaljem</button></a>
+        <p class="note">Video će ostati lokalno sačuvan ako izaberete da ga ne pošaljete.</p>
+    </div>
+</body>
+</html>

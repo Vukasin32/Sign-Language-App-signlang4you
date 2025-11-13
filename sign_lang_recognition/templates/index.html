@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Language App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>Dobrodošli u aplikaciju <b class="app-name">signlang4you</b>!</h1>
+
+        <p>Izaberite jednu od dve opcije ispod:</p>
+
+        <div class="btn-group">
+            <button class="action-btn asl-btn" id="showASLBtn">ASL tablica i učenje</button>
+            <a href="/start"><button class="start-btn">Pokrenite video sesiju</button></a>
+        </div>
+
+        <p class="note">Nakon završene video sesije Vaš video zapis možete poslati na željenu adresu.</p>
+    </div>
+
+    <!-- Overlay za prikaz slike -->
+    <div id="aslOverlay" class="overlay" tabindex="0">
+        <img src="{{ url_for('static', filename='asl_table.png') }}" alt="ASL tablica" class="asl-img center-img">
+        <p id="aslText">Pritisnite na tastaturi slovo <b>S</b> kako biste pristupili učenju znakovnog jezika.<br><br>
+           Sačekajte nekoliko sekundi dok se ne pokrene kamera.</p>
+    </div>
+
+</body>
+</html>
