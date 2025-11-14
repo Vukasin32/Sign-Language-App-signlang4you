@@ -10,15 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function handleKey(e) {
             if (e.key.toLowerCase() === "s") {
-                // Pokreni Python skriptu u pozadini
+                // Fetch rutu koja pokreće Python skriptu u pozadini pomoću Flask-a
                 fetch("/learn_sign")
                     .then(response => console.log("Skripta pokrenuta u pozadini"))
                     .catch(err => console.error(err));
 
-                // Ukloni tekst
+                // Uklanjanje teksta
                 aslText.style.display = "none";
 
-                // Pomeri sliku u gornji desni ugao
+                // Pomeranje slike u gornji desni ugao
                 aslImage.classList.remove("center-img");
                 aslImage.classList.add("top-right");
 
