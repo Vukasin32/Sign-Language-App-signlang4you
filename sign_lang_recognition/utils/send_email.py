@@ -8,7 +8,7 @@ import os
 def send_video_email(recipient, video_path):
     try:
         sender = "signlang4you@gmail.com"
-        app_password = "gctu qdas adoo tudq"  # 16-cifreni kod koji si dobio od Google-a
+        app_password = "gctu qdas adoo tudq"  
 
         msg = MIMEMultipart()
         msg["From"] = sender
