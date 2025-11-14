@@ -46,7 +46,7 @@ models_and_params = [
     })
 ]
 
-# Random pretraga hiperparametara (CV)
+# Random pretraga hiperparametara
 results = []
 for name, model, params in models_and_params:
     print(f"\n--- Optimizacija modela: {name} ---")
@@ -61,17 +61,14 @@ for name, model, params in models_and_params:
 
     results.append((name, search.best_score_, search.best_estimator_))
 
-# Biramo model koji je najbolji prema VALIDACIONOM skoru iz CV-a
 best_name, best_score, best_model = max(results, key=lambda x: x[1])
-print(f"\n✅ Najbolji model na validacionom skupu: {best_name} ({best_score:.4f})")
+print(f"\nNajbolji model na validacionom skupu: {best_name} ({best_score:.4f})")
 
-# Evaluacija na test skupu
 y_test_pred = best_model.predict(X_test)
 test_acc = accuracy_score(y_test, y_test_pred)
-print(f"📊 Test tačnost: {test_acc * 100:.2f}%")
+print(f"Test tačnost: {test_acc * 100:.2f}%")
 
-# Matrica konfuzije za test skup
-cm = confusion_matrix(y_test, y_test_pred)
+cm = confusion_matrix(y_test, y_test_pred)    # Matrica konfuzije za test skup
 
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
@@ -81,8 +78,5 @@ plt.ylabel("Stvarne klase")
 plt.tight_layout()
 plt.show()
 
-# Čuvanje modela i scaler-a
 with open("model.pickle", "wb") as f:
     pickle.dump({'model': best_model, 'scaler': scaler, 'label_encoder': le}, f)
-
-print("\n💾 Sačuvan najbolji model (validacioni skup) i scaler.")
