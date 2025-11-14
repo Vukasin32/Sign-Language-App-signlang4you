@@ -9,13 +9,13 @@ model_dict = pickle.load(open('./model.pickle', 'rb'))
 model = model_dict['model']
 scaler = model_dict['scaler']
 
-mp_hands = mp.solutions.hands # This object is used to detect hands
-mp_drawing = mp.solutions.drawing_utils # This object is used to draw landmarks on image
-mp_drawing_styles = mp.solutions.drawing_styles # This object is used to set style of landmarks
+mp_hands = mp.solutions.hands # Objekat za detekciju šake
+mp_drawing = mp.solutions.drawing_utils # Objekat za crtanje značajnih tačaka šake
+mp_drawing_styles = mp.solutions.drawing_styles # Objekat za podešavanje stila značajnih tačaka šake
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-# dict_letters represents which label corresponds to which letter in original images from data directory
+# dict_letters sadrži informaciju koji encoding odgovara kojoj labeli
 dict_letters = {
     i + 1: letter
     for i, letter in enumerate(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -28,8 +28,8 @@ while True:
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     data_acc = []
-    x_ = [] # List of landmarks x coord. of current prediction
-    y_ = [] # List of landmarks y coord. of current prediction
+    x_ = [] # Lista x koordinata značajnih tačaka za trenutnu poziciju tačke
+    y_ = [] # Lista y koordinata značajnih tačaka za trenutnu poziciju tačke
     result = hands.process(frame_rgb)
 
     hand_label = None
@@ -37,7 +37,7 @@ while True:
         hand_label = result.multi_handedness[0].classification[0].label
         print(hand_label)
 
-    if result.multi_hand_landmarks and len(result.multi_hand_landmarks) == 1: # One hand regime
+    if result.multi_hand_landmarks and len(result.multi_hand_landmarks) == 1: # Detektovana je jedna šaka
         hand_landmarks = result.multi_hand_landmarks[0]
         mp_drawing.draw_landmarks(
             frame,
@@ -58,10 +58,10 @@ while True:
         print(y_[8])
 
         if hand_label == "Right":
-            x_center = (min(x_) + max(x_)) / 2  # centralna vertikalna osa
+            x_center = (min(x_) + max(x_)) / 2  # Simetrija u odnosu na vertikalnu osu simetrije bounding box-a šake ukoliko se prikazuje simbola pomoću leve šake
             x_ = [2 * x_center - x for x in x_]
 
-        if len(data_acc) == 42: # Prediction will be made only if all landmarks can be registered in image
+        if len(data_acc) == 42: # Moraju biti detektovane sve značajne tačke šake kako bi se izvršila predikcija
             x1 = int(min(x_) * w) - 10
             x2 = int(max(x_) * w) + 10
             y1 = int(min(y_) * h) - 10
@@ -77,7 +77,7 @@ while True:
                         cv2.LINE_AA)
             cv2.rectangle(frame, (x1,y1), (x2,y2), (255, 255, 0), 3)
 
-    elif result.multi_hand_landmarks and len(result.multi_hand_landmarks) == 2: # Two hands regime - Space regime
+    elif result.multi_hand_landmarks and len(result.multi_hand_landmarks) == 2: # Dve šake su detekovane - Space regime
         for hand_landmarks in result.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
                 frame,
