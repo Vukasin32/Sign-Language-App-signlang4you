@@ -6,21 +6,24 @@ app = Flask(__name__)
 
 VIDEO_PATH = "static/videos/session_recording.mp4"
 
+# Podrazumevana ruta
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Ruta na kojoj se pokreće make_sign_messages.py - skripta za pravljenje video sesije pokzaivanja znakovnog jezika
 @app.route('/start')
 def start_session():
     subprocess.run(["python", "make_sign_messages.py"])
     return redirect(url_for('finish'))
 
+# Ruta na kojoj se pokreće learn_sign_lang.py - skripta za učenje znakovnog jezika
 @app.route('/learn_sign')
 def learn_sign():
-    # Pokreće learn_sign_lang.py u pozadini
     subprocess.Popen(["python", "learn_sign_lang.py"])
-    return '', 204  # 204 No Content, frontend ostaje na istoj stranici
+    return '', 204 
 
+# Ruta sa koje korinsik može da pošalje snimak svoje video sesije na željenu mejl adresu
 @app.route('/finish', methods=['GET', 'POST'])
 def finish():
     if request.method == 'POST':
