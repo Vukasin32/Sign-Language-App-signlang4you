@@ -7,24 +7,24 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-dict_ = pickle.load(open("./data.pickle", 'rb'))
+dict_ = pickle.load(open("./data.pickle", 'rb'))    # Učitavanje podataka
 
 data = np.array(dict_['data'])
 labels = np.array(dict_['labels'])
 
 print(np.size(data))
 
-X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, stratify=labels, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, stratify=labels, shuffle=True)    # Podela na trening i test skup
 
-scaler = StandardScaler()
+scaler = StandardScaler()    #  Standardizacija podataka
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-model = SVC(kernel="rbf", gamma="scale", C=100)
+model = SVC(kernel="rbf", gamma="scale", C=100)    # Optimalan model dobijen pomoću cross validacije
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
-print(f'{accuracy_score(y_pred, y_test)*100:.2f}% accuracy!')
+print(f'{accuracy_score(y_pred, y_test)*100:.2f}% accuracy!')    # Tačnost na test skupu
 
 dict_letters = {
     str(i + 1): letter
@@ -35,7 +35,7 @@ dict_letters = {
 unique_labels = sorted(np.unique(labels), key=lambda x: int(x))
 letters = [dict_letters[str(i)] for i in unique_labels]
 
-cm = confusion_matrix(y_test, y_pred, labels=unique_labels)
+cm = confusion_matrix(y_test, y_pred, labels=unique_labels)    # Matrica konfuzije za podatke na test skupu
 
 plt.figure(figsize=(10, 8))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
@@ -48,15 +48,14 @@ plt.tight_layout()
 plt.show()
 
 from sklearn.decomposition import PCA
-from mpl_toolkits.mplot3d import Axes3D  # ovo aktivira 3D plot
+from mpl_toolkits.mplot3d import Axes3D  
 import matplotlib.pyplot as plt
 import numpy as np
 
-# PCA na 3 komponente
+# PCA za 3 komponente
 pca = PCA(n_components=3)
 X_proj = pca.fit_transform(X_test)
 
-# Definiši jaku paletu boja
 colors = plt.cm.tab20(np.linspace(0, 1, len(np.unique(y_test))))
 
 fig = plt.figure(figsize=(10, 8))
