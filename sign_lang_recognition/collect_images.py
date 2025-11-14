@@ -1,13 +1,13 @@
 import os
 import cv2
 
-directory = './data' # Use new directory if you want to make your base
+directory = './data' # Naziv direktorijuma gde će se čuvati slike
 
 if not os.path.exists(directory):
     os.mkdir(directory)
 
-num_of_classes = 22     # Number of hand symbols, one symbol is one letter
-size_of_classes = 800    # Number of images that will be created for each symbol
+num_of_classes = 22     # Broj simbola - broj klasa
+size_of_classes = 800    # Broj primera svakog od simbola - broj primera svake klase
 
 cap = cv2.VideoCapture(0)
 for i in range(num_of_classes):
